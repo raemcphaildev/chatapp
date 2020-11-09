@@ -23,7 +23,9 @@ form {
     /* padding: 3px;  */
     width: 100%;
     max-width: 960px;  
-    bottom: 0; 
+    bottom: 0;
+    margin-left: auto; 
+    margin-right: auto; 
     position: fixed;
 }
 form input { 
