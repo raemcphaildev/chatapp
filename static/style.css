@@ -21,7 +21,8 @@ form {
     display: flex;
     background: green; 
     /* padding: 3px;  */
-    width: 960px; 
+    width: 100%;
+    max-width: 960px;  
     bottom: 0; 
     position: fixed;
 }
