@@ -19,13 +19,14 @@
 }
 form { 
     display: flex;
-    background: white; 
+    background: green; 
     /* padding: 3px;  */
-    width: 100%; 
+    width: 960px; 
     bottom: 0; 
     position: fixed;
 }
 form input { 
+    background: red;
     border: 0; 
     padding: 10px; 
     width: 90%; 
