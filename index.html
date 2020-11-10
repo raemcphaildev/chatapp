@@ -5,16 +5,19 @@
     <link href="style.css" rel="stylesheet">
   </head>
   <body>
+    <div class="header">
+      Chat App
+    </div>
     <div class="container">
       <div class="users">
         Users:
       </div>
       <div class="messageside">
         <ul id="messages"></ul>
+        <form action="">
+          <input id="m" autocomplete="off" /><button>Send</button>
+        </form>
       </div>
-      <form action="">
-        <input id="m" autocomplete="off" /><button>Send</button>
-      </form>
     </div>
   </body>
   <script src="/socket.io/socket.io.js"></script>
