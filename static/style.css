@@ -43,7 +43,8 @@ form {
     display: flex;
     background: #37B3B8;
     position: relative;
-    bottom: 0;  
+    margin-top: 92vh;
+    height: 4vh;
     /* padding: 3px;  */
     /* position: relative; */
     /* width: 100%; */
