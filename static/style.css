@@ -32,7 +32,9 @@
 }
 .messageside{
     width: 70%;
+    height: 92vh;
     background: #B3D0D1;
+    /* overflow: auto; */
 }
 .users{
     width: 30%;
@@ -43,7 +45,7 @@ form {
     display: flex;
     background: #37B3B8;
     position: relative;
-    margin-top: 92vh;
+    /* margin-top: 92vh; */
     height: 4vh;
     /* padding: 3px;  */
     /* position: relative; */
@@ -59,7 +61,7 @@ form {
 form input { 
     background:#B3D0D1;
     border: 0;
-    margin: 3px;
+    margin: 0.5%;
     padding: 10px;
     /* padding: 10px;
     margin-top: 3px;
@@ -70,9 +72,9 @@ form input {
     /* margin-right: 0.5%;  */
 }
 form button { 
-    margin: 3px;
+    margin: 0.5%;
     width: 9%; 
-    background: rgb(130, 224, 255); 
+    background:#B3D0D1; 
     border: none;
     /* margin: 0.3%;
     margin-left: 5px;  */
@@ -81,7 +83,10 @@ form button {
 #messages { 
     list-style-type: none; 
     margin: 0; 
-    padding: 0; 
+    padding: 0;
+    height: 92vh;
+    background: #B3D0D1;
+    overflow: auto; 
 }
 #messages li { 
     padding: 5px 10px; 
