@@ -4,34 +4,126 @@ var io = require('socket.io')(http);
 var path = require('path');
 var express = require('express');
 var cookieParser = require('cookie-parser');
+var cookie = require("cookies");
 
 app.use(cookieParser());
 
-var nextUser = 0;
+var nextUser = 1;
+
+var userNames = {};
+
+
+function checkUserName(name) {
+  used = false
+  for(key in userNames){
+    if(userNames[key] === name) {
+      used = true;
+    }
+  }
+  return used;
+}
+function assignUserName(name, num) {
+  // console.log("Trying to assign a user name");
+  // console.log(name, num);
+  //see if name is used already
+  used = checkUserName(name)
+  x = num;
+  namex = name;
+  while(used) {
+    if(used === false) {
+      userNames[num] = name;
+      break;
+    }
+    x++;
+    namex = "User" + x.toString();
+    used = checkUserName(name) 
+  }
+  // console.log(userNames);
+  return namex;
+}
+
+function parseCookies(str){
+  temp = str.split("; ");
+  cookies = {};
+  for(var i = 0; i < temp.length; i++){
+    var val = temp[i].split('=');
+    cookies[val[0]] = val[1];
+  }
+  console.log(cookies);
+  return cookies;  
+}
+
+function isNewUser(cookies){
+  var newUser = true;
+  for(var key in cookies) {
+    if (key == 'userId') {
+      newUser = false;
+    }
+  }
+  return newUser;
+  // if (newUser === true) {
+  //   console.log("New User");
+  //   // res.cookie ("userId", nextUser, { maxAge: 60 * 60 * 1000})
+  //   // name = "User" + nextUser.toString();
+  //   // nextUser++;
+  //   // name = assignUserName(name, nextUser);
+  //   // console.log("In cookie", cookies[io]);
+  //   // io.to(cookies[io]).emit('userName');
+  //   // console.log("Username is: ", assignUserName(name, nextUser));
+  // }
+  // if (newUser === false) {
+  //   console.log("Old User");
+  // }
+}
 
 app.get('/', (req, res) => {
+  console.log("IN APP");
   cookies = req.cookies
-  console.log("Cookies: ", cookies);
+  // console.log("Cookies: ", cookies);
   var newUser = true;
-  for(var key in req.cookies) {
-    console.log("Keys: ", key);
+  for(var key in cookies) {
     if (key == 'userId') {
       newUser = false;
     }
   }
   if (newUser === true) {
-    console.log("New User");
+    // console.log("New User");
     res.cookie ("userId", nextUser, { maxAge: 60 * 60 * 1000})
+    // name = "User" + nextUser.toString();
     nextUser++;
+    // name = assignUserName(name, nextUser);
+    // console.log("In cookie", cookies[io]);
+    // io.to(cookies[io]).emit('userName');
+    // console.log("Username is: ", assignUserName(name, nextUser));
   }
-  if (newUser === false) {
-    console.log("Old User");
-  }
-  // res.cookie ("user_num", nextUser, { maxAge: 60 * 60 * 1000});
-  // nextUser++;
-  // res.cookie ("colour", "red", { maxAge: 60 * 60 * 1000});
-  // res.cookie ("user", "jerry", { maxAge: 60 * 60 * 1000});
+  // if (newUser === false) {
+  //   console.log("Old User");
+  // }
   res.sendFile(__dirname + '/index.html');
+});
+
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  console.log("IN IO");
+  var cookief = socket.handshake.headers.cookie;
+  cookies = parseCookies(cookief);
+  console.log(cookies["userId"]);
+  // newUser = isNewUser(cookies);
+  // if(newUser) {
+  //   console.log("New");
+  //   name = "User" + nextUser.toString();
+  //   // nextUser++;
+  //   // name = assignUserName(name, nextUser);
+  //   console.log(name);
+  // }
+  socket.on('disconnect', () => {
+      console.log('user disconnected');
+  });
+  socket.on('chat message', (msg) => {
+      console.log('message: ' + msg);
+      socket.broadcast.emit('chat message', msg);
+  });
 });
 
 // //JSON object to be added to cookie 
@@ -54,16 +146,7 @@ app.get('/', (req, res) => {
 
 
 
-io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-    socket.on('chat message', (msg) => {
-        console.log('message: ' + msg);
-        socket.broadcast.emit('chat message', msg);
-    });
-});
+
 
 http.listen(3000, () => {
   console.log('listening on *:3000');
