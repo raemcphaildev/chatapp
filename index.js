@@ -23,23 +23,22 @@ function checkUserName(name) {
   return used;
 }
 function assignUserName(name, num) {
-  // console.log("Trying to assign a user name");
-  // console.log(name, num);
-  //see if name is used already
   used = checkUserName(name)
   x = num;
   namex = name;
   while(used) {
     if(used === false) {
-      userNames[num] = name;
+      userNames[x] = namex;
+      // console.log(num, name);
+      // console.log(userNames);
       break;
     }
     x++;
     namex = "User" + x.toString();
     used = checkUserName(name) 
   }
-  // console.log(userNames);
-  return namex;
+  userNames[x] = namex;
+  // console.log("DOne");
 }
 
 function parseCookies(str){
@@ -49,7 +48,7 @@ function parseCookies(str){
     var val = temp[i].split('=');
     cookies[val[0]] = val[1];
   }
-  console.log(cookies);
+  // console.log(cookies);
   return cookies;  
 }
 
@@ -79,7 +78,6 @@ function isNewUser(cookies){
 app.get('/', (req, res) => {
   console.log("IN APP");
   cookies = req.cookies
-  // console.log("Cookies: ", cookies);
   var newUser = true;
   for(var key in cookies) {
     if (key == 'userId') {
@@ -87,11 +85,12 @@ app.get('/', (req, res) => {
     }
   }
   if (newUser === true) {
-    // console.log("New User");
+    console.log("New User")
     res.cookie ("userId", nextUser, { maxAge: 60 * 60 * 1000})
-    // name = "User" + nextUser.toString();
+    name = "User" + nextUser.toString();
     nextUser++;
-    // name = assignUserName(name, nextUser);
+    name = assignUserName(name, nextUser);
+    // console.log(name);
     // console.log("In cookie", cookies[io]);
     // io.to(cookies[io]).emit('userName');
     // console.log("Username is: ", assignUserName(name, nextUser));
@@ -105,10 +104,12 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-  console.log("IN IO");
+  // console.log("IN IO");
   var cookief = socket.handshake.headers.cookie;
   cookies = parseCookies(cookief);
-  console.log(cookies["userId"]);
+  num = cookies["userId"];
+  console.log("Name: ", userNames);
+  // console.log(cookies["userId"]);
   // newUser = isNewUser(cookies);
   // if(newUser) {
   //   console.log("New");
@@ -143,10 +144,6 @@ io.on('connection', (socket) => {
 //   //shows all the cookies 
 //   res.send(req.cookies); 
 // });
-
-
-
-
 
 http.listen(3000, () => {
   console.log('listening on *:3000');
