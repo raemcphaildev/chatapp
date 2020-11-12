@@ -92,7 +92,7 @@ function uniqueUsername(str, num) {
 // }
 
 app.get('/', (req, res) => {
-  console.log("IN APP");
+  // console.log("IN APP");
   cookies = req.cookies
   var newUser = true;
   for(var key in cookies) {
@@ -137,29 +137,29 @@ io.on('connection', (socket) => {
       console.log('user disconnected');
   });
   socket.on('chat message', (msg) => {
-      console.log('message: ' + msg);
-      command = msg.substring(6,12);
-      command2 = msg.substring(6,13);
-      if(command === "/name "){
+      // console.log('message: ' + msg);
+      message = msg.split(' ');
+      command = message[1]
+      if(command == "/name"){
         name = msg.split("/name ");
         if(uniqueUsername(name[1], num)){
           io.to(socket.id).emit('userName', name[1]);
         }
       }
-      else if(command2 === "/color ") {
+      else if(command === "/color") {
         color = msg.split("/color ");
-        console.log(color[1]);
+        console.log(color[1].length);
         var re = /[0-9A-Fa-f]{6}/g;
-        if(re.test(color[1])){
+        if(re.test(color[1]) && (color[1].length == 6)){
           console.log("VALID HEX")
         }
         else{
           console.log("NOT VALID HEX");
         }
       }
-      else{
-        socket.broadcast.emit('chat message', msg);
-      }
+      // else{
+      //   socket.broadcast.emit('chat message', msg);
+      // }
   });
 });
 
