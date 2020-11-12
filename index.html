@@ -49,9 +49,9 @@
       });
       socket.on('loadMessages', function(num, messages, colors, userNames){
         $('#messages').empty();
-        console.log(messages);
-        console.log(colors);
-        console.log(userNames);
+        // console.log(messages);
+        // console.log(colors);
+        // console.log(userNames);
         messages.forEach(function(item, index, array) {
           msg = item.time + " " + userNames[item.id] + " " + item.message;
           if(item.id == num){
@@ -61,6 +61,7 @@
           else {
             $('#messages').append($('<li>').text(msg));
           }
+          $('#messages').scrollTop($('#messages')[0].scrollHeight)
         });
       });
       
