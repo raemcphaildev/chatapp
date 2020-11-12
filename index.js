@@ -128,13 +128,17 @@ io.on('connection', (socket) => {
   console.log('a user connected');
   var cookief = socket.handshake.headers.cookie;
   cookies = parseCookies(cookief);
-  num = cookies["userId"];
-  num = num.toString()
+  var num;
+  if(cookies["userId"] !=  undefined){
+    num = cookies["userId"];
+    num = num.toString()
+  }
+  io.to(socket.id).emit('setID', num);
   // console.log("Name: ", userNames[num]);
   if(userNames[num] != undefined) {
     io.to(socket.id).emit('userName', userNames[num]);
   }
-  io.to(socket.id).emit('loadMessages', num, messages, colors, userNames);
+  io.to(socket.id).emit('loadMessages', messages, colors, userNames);
   // console.log(cookies["userId"]);
   // newUser = isNewUser(cookies);
   // if(newUser) {
@@ -150,21 +154,24 @@ io.on('connection', (socket) => {
   socket.on('chat message', (msg) => {
       // console.log('message: ' + msg);
       message = msg.split(' ');
-      command = message[1]
+      command = message[0]
+      // console.log(message);
       if(command == "/name"){
         name = msg.split("/name ");
         if(uniqueUsername(name[1], num)){
           io.to(socket.id).emit('userName', name[1]);
         }
+        io.emit('loadMessages', messages, colors, userNames);
       }
       else if(command === "/color") {
         color = msg.split("/color ");
-        console.log(color[1].length);
+        // console.log(color[1].length);
         var re = /[0-9A-Fa-f]{6}/g;
         if(re.test(color[1]) && (color[1].length == 6)){
           colors[num] = color[1];
           console.log(colors);
         }
+        io.emit('loadMessages', messages, colors, userNames);
       }
       else{
         socket.broadcast.emit('chat message', msg);
@@ -181,9 +188,7 @@ io.on('connection', (socket) => {
         if(messages.length >= 200) {
           messages.shift();
         }
-        console.log(messages.length);
-        console.log(messages);
-        io.emit('loadMessages', '1', messages, colors, userNames);
+        io.emit('loadMessages', messages, colors, userNames);
       }
   });
 });
