@@ -12,6 +12,7 @@ var nextUser = 1;
 
 var userNames = {};
 var colors = {};
+var currentUsers = {};
 var messages = [];
 
 
@@ -114,7 +115,7 @@ app.get('/', (req, res) => {
     res.cookie ("userId", nextUser, { maxAge: 60 * 60 * 1000})
     name = "User" + nextUser.toString();
     name = assignUserName(name, nextUser);
-    colors[nextUser] = "000000";
+    colors[nextUser] = "#000000";
     nextUser++;
   }
   // if (newUser === false) {
@@ -137,8 +138,14 @@ io.on('connection', (socket) => {
   // console.log("Name: ", userNames[num]);
   if(userNames[num] != undefined) {
     io.to(socket.id).emit('userName', userNames[num]);
+    currentUsers[socket.id] = num;
+    // console.log(currentUsers);
+  }
+  if(colors[num]==undefined) {
+    colors[num] = "#000000";
   }
   io.to(socket.id).emit('loadMessages', messages, colors, userNames);
+  io.emit('updateUsers', currentUsers, userNames);
   // console.log(cookies["userId"]);
   // newUser = isNewUser(cookies);
   // if(newUser) {
@@ -150,25 +157,29 @@ io.on('connection', (socket) => {
   // }
   socket.on('disconnect', () => {
       console.log('user disconnected');
+      delete currentUsers[socket.id];
+      console.log(currentUsers);
+      io.emit('updateUsers', currentUsers, userNames);
   });
   socket.on('chat message', (msg) => {
       // console.log('message: ' + msg);
       message = msg.split(' ');
       command = message[0]
-      // console.log(message);
+      console.log(command);
       if(command == "/name"){
         name = msg.split("/name ");
         if(uniqueUsername(name[1], num)){
           io.to(socket.id).emit('userName', name[1]);
+          io.emit('loadMessages', messages, colors, userNames);
+          io.emit('updateUsers', currentUsers, userNames);
         }
-        io.emit('loadMessages', messages, colors, userNames);
       }
       else if(command === "/color") {
         color = msg.split("/color ");
-        // console.log(color[1].length);
+        console.log(color);
         var re = /[0-9A-Fa-f]{6}/g;
         if(re.test(color[1]) && (color[1].length == 6)){
-          colors[num] = color[1];
+          colors[num] = "#" + color[1];
           console.log(colors);
         }
         io.emit('loadMessages', messages, colors, userNames);

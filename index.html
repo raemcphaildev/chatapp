@@ -14,6 +14,7 @@
     <div class="container">
       <div class="users">
         Users:
+        <ul id="userlist"></ul>
       </div>
       <div class="messageside">
         <ul id="messages"></ul>
@@ -47,23 +48,30 @@
       socket.on('chat message', function(msg){
         $('#messages').append($('<li>').text(msg));
       });
+      socket.on('updateUsers', function(users, names){
+        // $('#userList').empty();
+        // for(user in users) {
+        //   // $('#userlist').append($('<li>').text(names[users[user]]));
+        //     console.log(names[users[user]]);
+        // }
+      });
       socket.on('userName', function(name){
         $('#nameDisplay').empty();
         $('#nameDisplay').append(name);
       });
       socket.on('loadMessages', function(messages, colors, userNames){
         $('#messages').empty();
-        // console.log(messages);
-        // console.log(colors);
-        // console.log(userNames);
+        console.log("Colours", colors);
         messages.forEach(function(item, index, array) {
           msg = item.time + " " + userNames[item.id] + " " + item.message;
+          msg = msg.fontcolor(colors[item.id]);
           if(item.id == id){
             msg = msg.bold();
             $('#messages').append($('<li id="nameDisplay">' + msg));
           }
+          // $('#messages').append($('<li id="nameDisplay">' + msg));
           else {
-            $('#messages').append($('<li>').text(msg));
+            $('#messages').append($('<li>' + msg));
           }
           $('#messages').scrollTop($('#messages')[0].scrollHeight)
         });
