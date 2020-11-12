@@ -179,6 +179,7 @@ io.on('connection', (socket) => {
         }
         messages.push(message);
         console.log(messages)
+        io.emit('loadMessages', '1', messages, colors, userNames);
       }
   });
 });

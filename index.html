@@ -31,12 +31,12 @@
       var socket = io();
       $('form').submit(function(e) {
         e.preventDefault(); // prevents page reloading
-        var h = new Date().getHours();
-        var m = new Date().getMinutes();
+        // var h = new Date().getHours();
+        // var m = new Date().getMinutes();
         var message = $('#m').val();
-        var my_message = '<li>' + (h + ":" + m + " " +$('#m').val()).bold();
+        // var my_message = '<li>' + (h + ":" + m + " " +$('#m').val()).bold();
         socket.emit('chat message', message);
-        $('#messages').append(my_message);
+        // $('#messages').append(my_message);
         $('#m').val('');
         return false;
       });
@@ -48,6 +48,7 @@
         $('#nameDisplay').append(name);
       });
       socket.on('loadMessages', function(num, messages, colors, userNames){
+        $('#messages').empty();
         console.log(messages);
         console.log(colors);
         console.log(userNames);
