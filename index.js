@@ -52,6 +52,22 @@ function parseCookies(str){
   return cookies;  
 }
 
+function uniqueUsername(str, num) {
+  unique = true;
+  for (var key in userNames) {
+    if(userNames[key] == str){
+      unique = false
+    }
+  }
+  if(unique == false) {
+    return false;
+  }
+  else{
+    userNames[num] = str;
+    return true;
+  }
+}
+
 // function isNewUser(cookies){
 //   var newUser = true;
 //   for(var key in cookies) {
@@ -104,7 +120,7 @@ io.on('connection', (socket) => {
   cookies = parseCookies(cookief);
   num = cookies["userId"];
   num = num.toString()
-  console.log("Name: ", userNames[num]);
+  // console.log("Name: ", userNames[num]);
   if(userNames[num] != undefined) {
     io.to(socket.id).emit('userName', userNames[num]);
   }
@@ -122,7 +138,28 @@ io.on('connection', (socket) => {
   });
   socket.on('chat message', (msg) => {
       console.log('message: ' + msg);
-      socket.broadcast.emit('chat message', msg);
+      command = msg.substring(6,12);
+      command2 = msg.substring(6,13);
+      if(command === "/name "){
+        name = msg.split("/name ");
+        if(uniqueUsername(name[1], num)){
+          io.to(socket.id).emit('userName', name[1]);
+        }
+      }
+      else if(command2 === "/color ") {
+        color = msg.split("/color ");
+        console.log(color[1]);
+        var re = /[0-9A-Fa-f]{6}/g;
+        if(re.test(color[1])){
+          console.log("VALID HEX")
+        }
+        else{
+          console.log("NOT VALID HEX");
+        }
+      }
+      else{
+        socket.broadcast.emit('chat message', msg);
+      }
   });
 });
 

@@ -44,11 +44,14 @@
         $('#messages').append($('<li>').text(msg));
       });
       socket.on('userName', function(name){
-        console.log("Received name: ", name);
         $('#nameDisplay').empty();
         $('#nameDisplay').append(name);
-
       });
+      // socket.on('userList', function(name){
+      //   console.log("Received name: ", name);
+      //   $('#nameDisplay').empty();
+      //   $('#nameDisplay').append(name);
+      // });
     });
   </script>
 </html> 
