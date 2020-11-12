@@ -110,10 +110,11 @@ app.get('/', (req, res) => {
     }
   }
   if (newUser === true) {
-    console.log("New User")
+    // console.log("New User")
     res.cookie ("userId", nextUser, { maxAge: 60 * 60 * 1000})
     name = "User" + nextUser.toString();
     name = assignUserName(name, nextUser);
+    colors[nextUser] = "000000";
     nextUser++;
   }
   // if (newUser === false) {
@@ -129,6 +130,7 @@ io.on('connection', (socket) => {
   cookies = parseCookies(cookief);
   num = cookies["userId"];
   num = num.toString()
+  io.to(socket.id).emit('loadMessages', num, messages, colors, userNames);
   // console.log("Name: ", userNames[num]);
   if(userNames[num] != undefined) {
     io.to(socket.id).emit('userName', userNames[num]);

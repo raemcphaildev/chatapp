@@ -47,6 +47,19 @@
         $('#nameDisplay').empty();
         $('#nameDisplay').append(name);
       });
+      socket.on('loadMessages', function(num, messages, colors, userNames){
+        console.log(messages);
+        console.log(colors);
+        console.log(userNames);
+        messages.forEach(function(item, index, array) {
+          // console.log(item, index)
+          msg = (item.time + " " + userNames[item.id] + " " + item.message).bold();
+          // msg = msg.bold();
+          $('#messages').append($('<li>' + msg));
+        });
+        // $('#messages').append($('<li>').text(msg));
+      });
+      
       // socket.on('userList', function(name){
       //   console.log("Received name: ", name);
       //   $('#nameDisplay').empty();
