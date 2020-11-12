@@ -5,15 +5,32 @@ var path = require('path');
 var express = require('express');
 var cookieParser = require('cookie-parser');
 
-io = require('express')();
-io.use(cookieParser());
 app.use(cookieParser());
 
+var nextUser = 0;
+
 app.get('/', (req, res) => {
-  console.log("Cookies: ", req.cookies)
-  res.cookie ("user", "bob", { maxAge: 60 * 60 * 1000});
-  res.cookie ("colour", "red", { maxAge: 60 * 60 * 1000});
-  res.cookie ("user", "jerry", { maxAge: 60 * 60 * 1000});
+  cookies = req.cookies
+  console.log("Cookies: ", cookies);
+  var newUser = true;
+  for(var key in req.cookies) {
+    console.log("Keys: ", key);
+    if (key == 'userId') {
+      newUser = false;
+    }
+  }
+  if (newUser === true) {
+    console.log("New User");
+    res.cookie ("userId", nextUser, { maxAge: 60 * 60 * 1000})
+    nextUser++;
+  }
+  if (newUser === false) {
+    console.log("Old User");
+  }
+  // res.cookie ("user_num", nextUser, { maxAge: 60 * 60 * 1000});
+  // nextUser++;
+  // res.cookie ("colour", "red", { maxAge: 60 * 60 * 1000});
+  // res.cookie ("user", "jerry", { maxAge: 60 * 60 * 1000});
   res.sendFile(__dirname + '/index.html');
 });
 
@@ -35,8 +52,9 @@ app.get('/', (req, res) => {
 //   res.send(req.cookies); 
 // });
 
+
+
 io.on('connection', (socket) => {
-  
     console.log('a user connected');
     socket.on('disconnect', () => {
         console.log('user disconnected');
