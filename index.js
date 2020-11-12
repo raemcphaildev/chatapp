@@ -52,28 +52,28 @@ function parseCookies(str){
   return cookies;  
 }
 
-function isNewUser(cookies){
-  var newUser = true;
-  for(var key in cookies) {
-    if (key == 'userId') {
-      newUser = false;
-    }
-  }
-  return newUser;
-  // if (newUser === true) {
-  //   console.log("New User");
-  //   // res.cookie ("userId", nextUser, { maxAge: 60 * 60 * 1000})
-  //   // name = "User" + nextUser.toString();
-  //   // nextUser++;
-  //   // name = assignUserName(name, nextUser);
-  //   // console.log("In cookie", cookies[io]);
-  //   // io.to(cookies[io]).emit('userName');
-  //   // console.log("Username is: ", assignUserName(name, nextUser));
-  // }
-  // if (newUser === false) {
-  //   console.log("Old User");
-  // }
-}
+// function isNewUser(cookies){
+//   var newUser = true;
+//   for(var key in cookies) {
+//     if (key == 'userId') {
+//       newUser = false;
+//     }
+//   }
+//   return newUser;
+//   // if (newUser === true) {
+//   //   console.log("New User");
+//   //   // res.cookie ("userId", nextUser, { maxAge: 60 * 60 * 1000})
+//   //   // name = "User" + nextUser.toString();
+//   //   // nextUser++;
+//   //   // name = assignUserName(name, nextUser);
+//   //   // console.log("In cookie", cookies[io]);
+//   //   // io.to(cookies[io]).emit('userName');
+//   //   // console.log("Username is: ", assignUserName(name, nextUser));
+//   // }
+//   // if (newUser === false) {
+//   //   console.log("Old User");
+//   // }
+// }
 
 app.get('/', (req, res) => {
   console.log("IN APP");
@@ -88,12 +88,8 @@ app.get('/', (req, res) => {
     console.log("New User")
     res.cookie ("userId", nextUser, { maxAge: 60 * 60 * 1000})
     name = "User" + nextUser.toString();
-    nextUser++;
     name = assignUserName(name, nextUser);
-    // console.log(name);
-    // console.log("In cookie", cookies[io]);
-    // io.to(cookies[io]).emit('userName');
-    // console.log("Username is: ", assignUserName(name, nextUser));
+    nextUser++;
   }
   // if (newUser === false) {
   //   console.log("Old User");
@@ -104,11 +100,14 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-  // console.log("IN IO");
   var cookief = socket.handshake.headers.cookie;
   cookies = parseCookies(cookief);
   num = cookies["userId"];
-  console.log("Name: ", userNames);
+  num = num.toString()
+  console.log("Name: ", userNames[num]);
+  if(userNames[num] != undefined) {
+    io.to(socket.id).emit('userName', userNames[num]);
+  }
   // console.log(cookies["userId"]);
   // newUser = isNewUser(cookies);
   // if(newUser) {

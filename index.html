@@ -7,6 +7,9 @@
   <body>
     <div class="header">
       Chat App
+      <div id="nameDisplay">
+        Hello
+      </div>
     </div>
     <div class="container">
       <div class="users">
@@ -40,10 +43,11 @@
       socket.on('chat message', function(msg){
         $('#messages').append($('<li>').text(msg));
       });
-      socket.on('userName', function(){
-        console.log("MESSAGE RECIEVED");
-        // console.log("Received name: ", name);
-        // $('#messages').append($('<li>').text(cookie));
+      socket.on('userName', function(name){
+        console.log("Received name: ", name);
+        $('#nameDisplay').empty();
+        $('#nameDisplay').append(name);
+
       });
     });
   </script>
