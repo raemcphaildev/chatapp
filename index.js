@@ -11,6 +11,7 @@ app.use(cookieParser());
 var nextUser = 1;
 
 var userNames = {};
+var colors = {};
 
 
 function checkUserName(name) {
@@ -151,7 +152,8 @@ io.on('connection', (socket) => {
         console.log(color[1].length);
         var re = /[0-9A-Fa-f]{6}/g;
         if(re.test(color[1]) && (color[1].length == 6)){
-          console.log("VALID HEX")
+          colors[num] = color[1];
+          console.log(colors);
         }
         else{
           console.log("NOT VALID HEX");
