@@ -178,7 +178,11 @@ io.on('connection', (socket) => {
           time: time
         }
         messages.push(message);
-        console.log(messages)
+        if(messages.length >= 200) {
+          messages.shift();
+        }
+        console.log(messages.length);
+        console.log(messages);
         io.emit('loadMessages', '1', messages, colors, userNames);
       }
   });
