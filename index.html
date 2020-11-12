@@ -33,7 +33,7 @@
         e.preventDefault(); // prevents page reloading
         var h = new Date().getHours();
         var m = new Date().getMinutes();
-        var message = h + ":" + m + " " + $('#m').val();
+        var message = $('#m').val();
         var my_message = '<li>' + (h + ":" + m + " " +$('#m').val()).bold();
         socket.emit('chat message', message);
         $('#messages').append(my_message);

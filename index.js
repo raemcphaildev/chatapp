@@ -12,6 +12,7 @@ var nextUser = 1;
 
 var userNames = {};
 var colors = {};
+var messages = [];
 
 
 function checkUserName(name) {
@@ -67,6 +68,13 @@ function uniqueUsername(str, num) {
     userNames[num] = str;
     return true;
   }
+}
+
+function checkTime(i) {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
 }
 
 // function isNewUser(cookies){
@@ -155,13 +163,21 @@ io.on('connection', (socket) => {
           colors[num] = color[1];
           console.log(colors);
         }
-        else{
-          console.log("NOT VALID HEX");
-        }
       }
-      // else{
-      //   socket.broadcast.emit('chat message', msg);
-      // }
+      else{
+        socket.broadcast.emit('chat message', msg);
+        var h = new Date().getHours();
+        var m = new Date().getMinutes();
+        m = checkTime(m);
+        var time = h + ":" + m;
+        var message = {
+          id: num,
+          message: msg,
+          time: time
+        }
+        messages.push(message);
+        console.log(messages)
+      }
   });
 });
 
