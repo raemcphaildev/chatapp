@@ -130,11 +130,11 @@ io.on('connection', (socket) => {
   cookies = parseCookies(cookief);
   num = cookies["userId"];
   num = num.toString()
-  io.to(socket.id).emit('loadMessages', num, messages, colors, userNames);
   // console.log("Name: ", userNames[num]);
   if(userNames[num] != undefined) {
     io.to(socket.id).emit('userName', userNames[num]);
   }
+  io.to(socket.id).emit('loadMessages', num, messages, colors, userNames);
   // console.log(cookies["userId"]);
   // newUser = isNewUser(cookies);
   // if(newUser) {

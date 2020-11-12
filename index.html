@@ -52,12 +52,15 @@
         console.log(colors);
         console.log(userNames);
         messages.forEach(function(item, index, array) {
-          // console.log(item, index)
-          msg = (item.time + " " + userNames[item.id] + " " + item.message).bold();
-          // msg = msg.bold();
-          $('#messages').append($('<li>' + msg));
+          msg = item.time + " " + userNames[item.id] + " " + item.message;
+          if(item.id == num){
+            msg = msg.bold();
+            $('#messages').append($('<li id="nameDisplay">' + msg));
+          }
+          else {
+            $('#messages').append($('<li>').text(msg));
+          }
         });
-        // $('#messages').append($('<li>').text(msg));
       });
       
       // socket.on('userList', function(name){
