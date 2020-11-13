@@ -186,6 +186,23 @@ io.on('connection', (socket) => {
       }
       else{
         socket.broadcast.emit('chat message', msg);
+        while(msg.includes(":)")){
+          msg = msg.replace(":)",'😊');
+        }
+        while(msg.includes(":(")){
+          msg = msg.replace(":(",'🥺');
+        }
+        while(msg.includes(":o")){
+          msg = msg.replace(":o",'😲');
+        }
+        while(msg.includes(";)")){
+          msg = msg.replace(";)",'😉');
+        }
+        while(msg.includes("<3")){
+          msg = msg.replace("<3",'❤️');
+        }
+        
+        // msg = msg.replaceAll(":)", "AAAA");
         var h = new Date().getHours();
         var m = new Date().getMinutes();
         m = checkTime(m);
