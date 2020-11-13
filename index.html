@@ -17,6 +17,7 @@
         <ul id="userlist"></ul>
       </div>
       <div class="messageside">
+        <div>Hi</div>
         <ul id="messages"></ul>
         <form action="">
           <input id="m" autocomplete="off" /><button>Send</button>
@@ -49,11 +50,11 @@
         $('#messages').append($('<li>').text(msg));
       });
       socket.on('updateUsers', function(users, names){
-        // $('#userList').empty();
-        // for(user in users) {
-        //   // $('#userlist').append($('<li>').text(names[users[user]]));
-        //     console.log(names[users[user]]);
-        // }
+        $('#userlist').empty();
+        for(user in users) {
+          $('#userlist').append($('<li>').text(names[users[user]]));
+            console.log(names[users[user]]);
+        }
       });
       socket.on('userName', function(name){
         $('#nameDisplay').empty();
