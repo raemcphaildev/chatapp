@@ -6,7 +6,6 @@
   </head>
   <body>
     <div class="header">
-      Chat App
       <div id="nameDisplay">
       </div>
     </div>
@@ -56,13 +55,13 @@
       });
       socket.on('userName', function(name){
         $('#nameDisplay').empty();
-        $('#nameDisplay').append("Welcome back, " + name);
+        $('#nameDisplay').append("Happy chatting, " + name);
       });
       socket.on('loadMessages', function(messages, colors, userNames){
         $('#messages').empty();
         console.log("Colours", colors);
         messages.forEach(function(item, index, array) {
-          msg = item.time + " " + userNames[item.id] + " " + item.message;
+          msg = item.time + " " + userNames[item.id] + ":     " + item.message;
           msg = msg.fontcolor(colors[item.id]);
           if(item.id == id){
             msg = msg.bold();

@@ -20,7 +20,13 @@
 .header{
     background: #37B3B8;
     height: 4vh;
-    /* position: sticky; */
+    display: flex;
+    text-align: center;
+    /* flex-direction: row; */
+}
+#nameDisplay{
+    font-size: 2vh;
+    margin: auto;
 }
 .container{
     background: #37B3B8;
@@ -92,6 +98,7 @@ form button {
 #messages li { 
     padding: 5px 10px;
     background: inherit;
+    font-size: 20px;
 }
 #messages li text{ 
     padding: 5px 10px;
