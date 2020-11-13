@@ -8,12 +8,11 @@
     <div class="header">
       Chat App
       <div id="nameDisplay">
-        Hello
       </div>
     </div>
     <div class="container">
       <div class="users">
-        Users:
+        <u>Online:</u>
         <ul id="userlist"></ul>
       </div>
       <div class="messageside">
@@ -57,7 +56,7 @@
       });
       socket.on('userName', function(name){
         $('#nameDisplay').empty();
-        $('#nameDisplay').append(name);
+        $('#nameDisplay').append("Welcome back, " + name);
       });
       socket.on('loadMessages', function(messages, colors, userNames){
         $('#messages').empty();

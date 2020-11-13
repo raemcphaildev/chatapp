@@ -1,13 +1,13 @@
 * { 
     margin: 0; 
     padding: 0; 
-    box-sizing: border-box; 
+    box-sizing: border-box;
     /* background: gray; */
 }
 
  body { 
     background: gray; 
-    font: 13px Helvetica, Arial; 
+    font: 13px Arial, Helvetica; 
     max-width: 960px; 
     height: 100vh;
     flex-direction: column;
@@ -73,9 +73,9 @@ form button {
     background: inherit;
 }
 #messages { 
-    /* list-style-type: none; 
-    margin: 0; 
-    padding: 0; */
+    list-style-type: none; 
+    /* margin: 0;  */
+    /* padding: 0; */ 
     max-height: 92vh;
     width: 70%;
     /* display: contents; */
@@ -97,6 +97,25 @@ form button {
     padding: 5px 10px;
     background: inherit;
 }
-/* #messages li:nth-child(odd) { 
-    background: #eee; 
-} */
+#userlist{
+    font-size: 3vh;
+    text-align: center;
+    list-style-type: none;
+    
+    /* background-color: green; */
+}
+#userlist li{
+    padding: 3vh;
+    text-decoration: none;
+}
+
+.users{
+    font-size: 4vh;
+    text-align: center;
+    list-style-type: none;
+    padding: 1vh;
+    /* text-decoration: underline; */
+    /* font-weight: 200; */
+    /* margin: 2vh; */
+    /* background-color: green; */
+}
