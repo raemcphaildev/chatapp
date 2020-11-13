@@ -34,8 +34,8 @@
     width: 70%;
     height: 92vh;
     background: #B3D0D1;
-    position: relative;
-    display: inline-block;
+    /* position: relative; */
+    /* display: inline-block; */
     /* overflow: auto; */
 }
 .users{
@@ -49,7 +49,7 @@ form {
     position: absolute;
     bottom: 0;
     height: 4vh; 
-    width: 100%;
+    width: 70%;
 }
 form input { 
     background:#B3D0D1;
@@ -76,14 +76,14 @@ form button {
     /* list-style-type: none; 
     margin: 0; 
     padding: 0; */
-    /* height: 92vh; */
-    width: 100%;
-    display: contents;
+    max-height: 92vh;
+    width: 70%;
+    /* display: contents; */
     /* background: inherit; */
-    background:purple;
-    overflow: auto;
+    /* background:purple; */
+    overflow-y: scroll;
     position: absolute;
-    bottom: 50px;
+    bottom: 4vh;
 }
 #messages ul { 
     padding: 5px 10px;
