@@ -31,12 +31,8 @@
       var id;
       $('form').submit(function(e) {
         e.preventDefault(); // prevents page reloading
-        // var h = new Date().getHours();
-        // var m = new Date().getMinutes();
         var message = $('#m').val();
-        // var my_message = '<li>' + (h + ":" + m + " " +$('#m').val()).bold();
         socket.emit('chat message', message);
-        // $('#messages').append(my_message);
         $('#m').val('');
         return false;
       });
@@ -50,7 +46,6 @@
         $('#userlist').empty();
         for(user in users) {
           $('#userlist').append($('<li>').text(names[users[user]]));
-            console.log(names[users[user]]);
         }
       });
       socket.on('userName', function(name){
@@ -59,7 +54,6 @@
       });
       socket.on('loadMessages', function(messages, colors, userNames){
         $('#messages').empty();
-        console.log("Colours", colors);
         messages.forEach(function(item, index, array) {
           msg = item.time + " " + userNames[item.id] + ":     " + item.message;
           msg = msg.fontcolor(colors[item.id]);
@@ -67,19 +61,13 @@
             msg = msg.bold();
             $('#messages').append($('<li id="nameDisplay">' + msg));
           }
-          // $('#messages').append($('<li id="nameDisplay">' + msg));
           else {
             $('#messages').append($('<li>' + msg));
           }
           $('#messages').scrollTop($('#messages')[0].scrollHeight)
         });
       });
-      
-      // socket.on('userList', function(name){
-      //   console.log("Received name: ", name);
-      //   $('#nameDisplay').empty();
-      //   $('#nameDisplay').append(name);
-      // });
+    
     });
   </script>
 </html> 

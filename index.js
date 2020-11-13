@@ -32,8 +32,6 @@ function assignUserName(name, num) {
   while(used) {
     if(used === false) {
       userNames[x] = namex;
-      // console.log(num, name);
-      // console.log(userNames);
       break;
     }
     x++;
@@ -41,7 +39,6 @@ function assignUserName(name, num) {
     used = checkUserName(name) 
   }
   userNames[x] = namex;
-  // console.log("DOne");
 }
 
 function parseCookies(str){
@@ -51,7 +48,6 @@ function parseCookies(str){
     var val = temp[i].split('=');
     cookies[val[0]] = val[1];
   }
-  // console.log(cookies);
   return cookies;  
 }
 
@@ -78,31 +74,7 @@ function checkTime(i) {
   return i;
 }
 
-// function isNewUser(cookies){
-//   var newUser = true;
-//   for(var key in cookies) {
-//     if (key == 'userId') {
-//       newUser = false;
-//     }
-//   }
-//   return newUser;
-//   // if (newUser === true) {
-//   //   console.log("New User");
-//   //   // res.cookie ("userId", nextUser, { maxAge: 60 * 60 * 1000})
-//   //   // name = "User" + nextUser.toString();
-//   //   // nextUser++;
-//   //   // name = assignUserName(name, nextUser);
-//   //   // console.log("In cookie", cookies[io]);
-//   //   // io.to(cookies[io]).emit('userName');
-//   //   // console.log("Username is: ", assignUserName(name, nextUser));
-//   // }
-//   // if (newUser === false) {
-//   //   console.log("Old User");
-//   // }
-// }
-
 app.get('/', (req, res) => {
-  // console.log("IN APP");
   cookies = req.cookies
   var newUser = true;
   for(var key in cookies) {
@@ -111,16 +83,12 @@ app.get('/', (req, res) => {
     }
   }
   if (newUser === true) {
-    // console.log("New User")
     res.cookie ("userId", nextUser, { maxAge: 60 * 60 * 1000})
     name = "User" + nextUser.toString();
     name = assignUserName(name, nextUser);
     colors[nextUser] = "#000000";
     nextUser++;
   }
-  // if (newUser === false) {
-  //   console.log("Old User");
-  // }
   res.sendFile(__dirname + '/index.html');
 });
 
@@ -135,37 +103,25 @@ io.on('connection', (socket) => {
     num = num.toString()
   }
   io.to(socket.id).emit('setID', num);
-  // console.log("Name: ", userNames[num]);
   if(userNames[num] != undefined) {
     io.to(socket.id).emit('userName', userNames[num]);
     currentUsers[socket.id] = num;
-    // console.log(currentUsers);
   }
   if(colors[num]==undefined) {
     colors[num] = "#000000";
   }
   io.to(socket.id).emit('loadMessages', messages, colors, userNames);
   io.emit('updateUsers', currentUsers, userNames);
-  // console.log(cookies["userId"]);
-  // newUser = isNewUser(cookies);
-  // if(newUser) {
-  //   console.log("New");
-  //   name = "User" + nextUser.toString();
-  //   // nextUser++;
-  //   // name = assignUserName(name, nextUser);
-  //   console.log(name);
-  // }
+ 
   socket.on('disconnect', () => {
       console.log('user disconnected');
       delete currentUsers[socket.id];
-      console.log(currentUsers);
       io.emit('updateUsers', currentUsers, userNames);
   });
   socket.on('chat message', (msg) => {
-      // console.log('message: ' + msg);
+
       message = msg.split(' ');
       command = message[0]
-      console.log(command);
       if(command == "/name"){
         name = msg.split("/name ");
         if(uniqueUsername(name[1], num)){
@@ -176,11 +132,9 @@ io.on('connection', (socket) => {
       }
       else if(command === "/color") {
         color = msg.split("/color ");
-        console.log(color);
         var re = /[0-9A-Fa-f]{6}/g;
         if(re.test(color[1]) && (color[1].length == 6)){
           colors[num] = "#" + color[1];
-          console.log(colors);
         }
         io.emit('loadMessages', messages, colors, userNames);
       }
@@ -201,8 +155,6 @@ io.on('connection', (socket) => {
         while(msg.includes("<3")){
           msg = msg.replace("<3",'❤️');
         }
-        
-        // msg = msg.replaceAll(":)", "AAAA");
         var h = new Date().getHours();
         var m = new Date().getMinutes();
         m = checkTime(m);
@@ -220,24 +172,6 @@ io.on('connection', (socket) => {
       }
   });
 });
-
-// //JSON object to be added to cookie 
-// let users = { 
-//   name : "Ritik", 
-//   Age : "18"
-// } 
-    
-//   //Route for adding cookie 
-// app.get('/setuser', (req, res)=>{ 
-//   res.cookie("userData", users); 
-//   res.send('user data added to cookie'); 
-// }); 
-
-// //Iterate users data from cookie 
-// app.get('/getuser', (req, res)=>{ 
-//   //shows all the cookies 
-//   res.send(req.cookies); 
-// });
 
 http.listen(3000, () => {
   console.log('listening on *:3000');
